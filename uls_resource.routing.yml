@@ -1,0 +1,7 @@
+uls_resource.config_form:
+  path: '/admin/config/uls-resource'
+  defaults:
+    _form: '\Drupal\uls_resource\Form\ulsResourceForm'
+    _title: 'ULS Resource Migration Settings'
+  requirements:
+    _permission: 'administer site configuration'

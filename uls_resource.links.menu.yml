@@ -1,0 +1,11 @@
+uls_resource.settings:
+  title: 'ULS resource settings'
+  parent: system.admin_config
+  route_name: uls_resource.config_form
+  weight: 100
+
+uls_resource.uls_resource_migration_config:
+  title: 'Config'
+  parent: uls_resource.settings
+  route_name: uls_resource.config_form
+  weight: 10
