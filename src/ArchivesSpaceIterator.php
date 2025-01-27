@@ -1,8 +1,12 @@
 <?php
 
 namespace Drupal\uls_resource;
-define('F_PATH', '/var/www/html/drupal/config/temp-rz/');
-define('ULS_XSLT', implode(DIRECTORY_SEPARATOR, array(__DIR__, 'uls_ead.xslt')));
+if (! defined('F_PATH')) {
+	 define('F_PATH', '/var/www/html/drupal/config/temp-rz/');
+	}
+if(! defined('ULS_XSLT')) {
+	define('ULS_XSLT', implode(DIRECTORY_SEPARATOR, array(__DIR__, 'uls_ead.xslt')));
+	}
 
 /**
  * Manages iteration of ArchivesSpace API search result sets.
@@ -306,7 +310,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 			}	
 		}
 		//replace resource results with ead information
-                echo "size of ead result: " . sizeof($ead_results). PHP_EOL;
+                //echo "size of ead result: " . sizeof($ead_results). PHP_EOL;
 		$results['results'] = $ead_results;
 	} else {
     		$results = $this->session->request('GET', $this->repository . '/' . $this->type, $parameters);

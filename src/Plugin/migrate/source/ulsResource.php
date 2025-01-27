@@ -79,7 +79,7 @@ class ulsResource extends SourcePluginBase {
     switch ($this->objectType) {
 
        case 'resources':
-         echo "STEP1) GET into migration objectType field definition: " .__FILE__.PHP_EOL;
+         //echo "STEP1) GET into migration objectType field definition: " .__FILE__.PHP_EOL;
          $this->fields = [
           'uri' => $this->t('URI'),
           'title' => $this->t('Title'),
