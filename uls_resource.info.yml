@@ -3,17 +3,3 @@ type: module
 description: ULS archivesSpace resource migration
 core_version_requirement: ^10
 package: Custom
-dependencies:
-  - drupal:field
-  - drupal:language
-  - drupal:link
-  - drupal:media
-  - drupal:menu_ui
-  - drupal:migrate
-  - drupal:node
-  - drupal:options
-  - drupal:path
-  - drupal:taxonomy
-  - drupal:text
-  - drupal:user
-  - drupal:views

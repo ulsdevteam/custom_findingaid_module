@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Contains uls_resource.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ * Provides help text for uls_resource module
+ */
+function uls_resource_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.uls_resource':
+      return t('Provide ArchivesSpace EAD migration to drupal') ;
+  }
+}
