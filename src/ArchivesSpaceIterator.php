@@ -35,10 +35,6 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
   protected $types = [
     'repositories',
     'resources',
-    'agents/people',
-    'agents/corporate_entities',
-    'agents/families',
-    'subjects',
   ];
 
   /**
@@ -266,9 +262,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
           foreach ($results['results'] as $item) {
 		$item_ead = [];
 		//filter out resources with the published finding_aid
-		//if (($item['publish']) and ($item['is_finding_aid_status_published']) and strcmp($item['ead_id'], "us-ppiu-asp200902")==0 ) {
           	if (($item['publish']) and ($item['is_finding_aid_status_published'])) {
-			//echo "1. Capture EAD information of URI: ".$item['title'].PHP_EOL;
 			//keep primary resource information
 			$item_ead['uri'] = $item['uri']; 
                     	$item_ead['title'] = $item['title'];
@@ -284,7 +278,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 		    	$resourceId =  substr(strrchr($item['uri'], "/"), 1);
 	            	$ead_xml = $this->session->request('GET', 
 						$this->repository . '/resource_descriptions/'.$resourceId .'.xml', $ead_parameters, FALSE, TRUE);	
-		    	//echo "1. CHECK XML FIRST:" .PHP_EOL; replaced & not part of html entity like &abc123;, &#abc;
+		    	//Replaced special char & used that  not part of html entity like &abc123;, &#abc;
 			$ead_xml_format = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $ead_xml);
 			libxml_use_internal_errors(true); //store error in memory
 		    	$tmp_xml =simplexml_load_string($ead_xml_format);
@@ -303,13 +297,11 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 				echo "Failed transforming ead to html: " .$item_ead['title'] .PHP_EOL;
 				} 
 		    	$item_ead['ead_loc'] = $ead_location; 
-			//echo "3. Pushed ead info into reource query results" .PHP_EOL;
                 	array_push($ead_results, $item_ead);
 			} else {
-				echo "Skip processing resource :" . $item['title'] ." Check resource data's publish status. " .PHP_EOL;
+				echo "Skip processing resource :" . $item['title'] ." .Check resource data's publish status. " .PHP_EOL;
 			}	
 		}
-		//replace resource results with ead information
                 //echo "size of ead result: " . sizeof($ead_results). PHP_EOL;
 		$results['results'] = $ead_results;
 	} else {
@@ -322,8 +314,6 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
       $this->loaded   = $results;
     }
     else {
-	  if($this->type == 'archival_objects')
-            {print_r($parameters);}
       $this->count       = $results['total'];
       $this->currentPage = $results['this_page'];
       $this->lastPage    = $results['last_page'];

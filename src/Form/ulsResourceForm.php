@@ -57,7 +57,7 @@ class ulsResourceForm extends ConfigFormBase {
 
     $form['resource_link_prefix'] = [
       '#type' => 'details',
-      '#title' => t('Resource  Link Prefixs'),
+      '#title' => t('Resource Link Prefixs'),
       '#open' => TRUE,
     ];
 

@@ -1,0 +1,12 @@
+# Ignore operating system files
+.DS_Store
+
+# Ignore IDE files
+.vscode/
+
+# Ignore logs
+*.log
+
+# Ignore composer lock file
+#composer.lock
+

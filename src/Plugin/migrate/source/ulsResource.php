@@ -45,10 +45,6 @@ class ulsResource extends SourcePluginBase {
   protected $objectTypes = [
     'repositories',
     'resources',
-    'agents/people',
-    'agents/corporate_entities',
-    'agents/families',
-    'subjects',
   ];
 
   /**
@@ -73,8 +69,6 @@ class ulsResource extends SourcePluginBase {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
 
     $this->objectType = $configuration['object_type'];
-
-    print 'Check migration type: ' .$configuration['object_type'] .PHP_EOL;
 
     switch ($this->objectType) {
 
@@ -110,37 +104,6 @@ class ulsResource extends SourcePluginBase {
           'subjects' => $this->t('Subjects'),
           'suppressed' => $this->t('Suppressed'),
           'user_mtime' => $this->t('User Modified Time'),
-        ];
-        break;
-
-      case 'agents/people':
-      case 'agents/families':
-        // The only field person and family has that corp doesn't is publish,
-        // but we don't use it anyway, so all agent cases use the same fieldset.
-      case 'agents/corporate_entities':
-        $this->fields = [
-          'dates_of_existence' => $this->t('Dates of Existence'),
-          'display_name' => $this->t('Display Name'),
-          'is_linked_to_published_record' => $this->t('Is Linked to a Published Record'),
-          'linked_agent_roles' => $this->t('Linked Agent Roles'),
-          'names' => $this->t('Names'),
-          'notes' => $this->t('Notes'),
-          'related_agents' => $this->t('Related Agents'),
-          'title' => $this->t('Title'),
-          'agent_type' => $this->t('Agent Type'),
-          'uri' => $this->t('URI'),
-        ];
-        break;
-
-      case 'subject':
-        $this->fields = [
-          'uri' => $this->t('URI'),
-          'authority_id' => $this->t('Authority ID'),
-          'source' => $this->t('Authority Source'),
-          'title' => $this->t('Title'),
-          'external_ids' => $this->t('External IDs'),
-          'terms' => $this->t('Terms'),
-          'is_linked_to_published_record' => $this->t('Is Linked to a Published Record'),
         ];
         break;
 

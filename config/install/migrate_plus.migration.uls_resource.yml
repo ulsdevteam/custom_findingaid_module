@@ -22,7 +22,7 @@ source:
 process:
   type:
     plugin: default_value
-    default_value: test_resource
+    default_value: resource_ead
   title:
     -
       plugin: str_replace
