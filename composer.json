@@ -1,6 +1,6 @@
 {
   "name": "drupal/uls_resource",
-  "type": "drupal-module",
+  "type": "drupal-module-custom",
   "description": "A custom module to provide ArchivesSpace resource data to Drupal",
   "keywords": ["Drupal"],
   "license": "GPL-2.0-or-later",
