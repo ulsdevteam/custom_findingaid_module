@@ -1,7 +1,0 @@
-uls_resource.config_form:
-  path: '/admin/config/resource-ead'
-  defaults:
-    _form: '\Drupal\uls_resource\Form\ulsResourceForm'
-    _title: 'Resource EAD Migration Settings'
-  requirements:
-    _permission: 'administer site configuration'
