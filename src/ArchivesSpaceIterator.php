@@ -1,12 +1,12 @@
 <?php
 
 namespace Drupal\uls_resource;
-if (! defined('F_PATH')) {
-	 define('F_PATH', '/var/www/html/drupal/config/temp-rz/');
-	}
-if(! defined('ULS_XSLT')) {
+if (!defined('ULS_XSLT')) {
 	define('ULS_XSLT', implode(DIRECTORY_SEPARATOR, array(__DIR__, 'uls_ead.xslt')));
 	}
+if (!defined('FINDINGAID_PREFIX')) {
+	define('FINDINGAID_PREFIX', "Guide to the");
+}
 
 /**
  * Manages iteration of ArchivesSpace API search result sets.
@@ -174,7 +174,6 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
    *     ead unique identifier
    * @param array $file_params
    *     -$file_xslt stylesheet tranformation template 
-   *     -$file_path path to save tranformed result
    * @return str $f_content
    */
    public function ead_to_html($xml, $eadName, $file_params) {
@@ -194,7 +193,6 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
                         	print 'Error: Invalid resource resources URI: ' . $k. PHP_EOL;
                 	}
         	}
-		//var_dump($xsl_proc->getParameter('', 'viewonlineuri'));
         	libxml_use_internal_errors(true);
         	$result = $xsl_proc->importStyleSheet($d_xsl);
         	if(!$result) 
@@ -210,9 +208,6 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
          		$xml_result = $xsl_proc->transformToDoc($d_xml);
 			//save tranformed xml doc as local htmlfile
          		$f_content = $xml_result->saveHTML();
-			$f_name = $file_params['file_path'] .$eadName .".html";
-		
-		//	file_put_contents($f_name, $f_content);
 			return $f_content;
  		     }	
 		}
@@ -243,7 +238,6 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
    if($this->type == "resources")
 	{
 	//echo "STEP4). Start GET request to resources Type: " . __FILE__ .PHP_EOL;
-           {print_r($parameters);}
            $ead_parameters = [
       		'include_unpublished' => "False",
       		'include_daos' => "True",
@@ -253,7 +247,6 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 
 	  $file_params = [
 		'file_xslt' => ULS_XSLT,
-		'file_path' => F_PATH,
 		];
           $ead_results=[];
 
@@ -265,7 +258,11 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
           	if (($item['publish']) and ($item['is_finding_aid_status_published'])) {
 			//keep primary resource information
 			$item_ead['uri'] = $item['uri']; 
-                    	$item_ead['title'] = $item['title'];
+			if (array_key_exists('finding_aid_title', $item)) {
+				$item_ead['title'] = $item['finding_aid_title'];
+			} else {
+				$item_ead['title'] = FINDINGAID_PREFIX . $item['title'];
+				}
 			array_key_exists('ead_id', $item) ? $item_ead['ead_id'] = $item['ead_id'] : NULL;
 		        	
 			//construct resource identifier with the concatnated ids 

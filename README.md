@@ -1,11 +1,16 @@
-# Archivesspace_ead_migration
+# Archivesspace Finding Aid Migration
 
-## ArchivesSpace Resource ead migration
-This module is designed to utilize the exsiting drupal archivesspace module to facilitate of migration of archivesspace resource ead to drupal site
+This module is designed to utilize an exsiting drupal archivesspace module to facilitate archivesspace finding aid data migration to drupal site
 ## Usage
 1. Install the module
     - Install via composer (`composer require drupal/uls_resource`)
-
-### Configuration
+2. Enable the module and its dependencies
+    -   `drush en -y migrate_tools, migrate_plus`
+    -   `drush en -y uls_resource`
+    -   Confirm modules status (`drush pml --type=module --status=enabled | grep migrate_plus`) 
+3. Configurate ULS_Module Settings
 ULS resource content migration uses ArchivesSpace API point. The Resource prefix uris are used to link its associated objects contained in the resource. Please visit  `/admin/configuration/Resource EAD settings` in your Drupal site to configure these settings before migration.
 
+## Migration 
+1. Use drush to execute migration. Add --limit or --update to limit data migration record or process a migration data updates
+   -    `drush mim url_resource --limit=10`
