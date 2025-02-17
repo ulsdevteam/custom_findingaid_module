@@ -184,15 +184,19 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 		if ($d_xml->loadXML($xml) and $d_xsl->load($file_params["file_xslt"])) {
 		$xsl_proc = new \XSLTProcessor();
 		$xsl_proc->registerPHPFunctions();
-		foreach (\Drupal::state()->getMultiple(['archivesspace.viewonlineuri',
-     				 'archivesspace.readingroomuri',] ) as $k => $v) {
-                	$new_key = substr($k, 14);
-                	if (!empty($v) || preg_match("@^https?://@", $v) ) {
-                        	 $xsl_proc->setParameter('', substr($k,14), $v);
-                	} else {
-                        	print 'Error: Invalid resource resources URI: ' . $k. PHP_EOL;
-                	}
-        	}
+		
+    		$viewonlineUri =\Drupal::config('uls_resource.settings')->get('archivesspace_viewonlineuri');                                                 
+    		$readingroomUri =\Drupal::config('uls_resource.settings')->get('archivesspace_readingroomuri');                                                
+    		if ( !empty($viewonlineUri) &&  preg_match("@^https?://@", $viewonlineUri)  ) {                                                                                                           
+        		$xsl_proc->setParameter('', 'viewonlineuri', $viewonlineUri);                                                           
+        		} else  {
+				print 'Error: Invalid resource viewonline URI: ' . $viewonlineUri. PHP_EOL;
+			}
+		 if ( !empty($readingroomUri) &&  preg_match("@^https?://@", $readingroomUri)  ) {                 
+                        $xsl_proc->setParameter('', 'readingroomuri', $readingroomUri);                            
+                        } else  {                                                                     
+                                print 'Error: Invalid resource viewonline URI: ' . $readingroomUri. PHP_EOL;
+                        }       
         	libxml_use_internal_errors(true);
         	$result = $xsl_proc->importStyleSheet($d_xsl);
         	if(!$result) 

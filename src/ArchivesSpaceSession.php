@@ -123,17 +123,23 @@ class ArchivesSpaceSession {
    * Login to ArchivesSpace.
    */
   protected function login() {
+  
     $state_config = [];
-    foreach (\Drupal::state()->getMultiple(['archivesspace.base_uri',
-      'archivesspace.username',
-      'archivesspace.password',
-    ]
-                                          ) as $key => $value) {
-      $new_key = substr($key, 14);
-      if (!empty($value)) {
-        $state_config[$new_key] = $value;
-      }
-    }
+  
+    $baseUrl =\Drupal::config('uls_resource.settings')->get('archivesspace_base_uri');
+    $userName =\Drupal::config('uls_resource.settings')->get('archivesspace_username'); 
+    $passWord =\Drupal::config('uls_resource.settings')->get('archivesspace_password');
+    if ( !empty($baseUrl )) {
+	$state_config['base_uri'] = $baseUrl;
+	}
+    if ( !empty($userName )) {                                                                                                             
+        $state_config['username'] = $userName;                                                                                          
+        }        
+    if ( !empty($passWord )) {                                                                                                             
+        $state_config['password'] = $passWord;                                                                                          
+        }        
+
+    
     $this->connectionInfo = array_replace($this->connectionInfo, $state_config);
 
     // Setup the client.
