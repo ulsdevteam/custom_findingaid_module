@@ -1,30 +1,28 @@
 <?php
 
-namespace Drupal\uls_resource\Plugin\migrate\source;
+namespace Drupal\aspace_findingaid\Plugin\migrate\source;
 
-use Drupal\uls_resource\ArchivesSpaceIterator;
-use Drupal\uls_resource\ArchivesSpaceSession;
+use Drupal\aspace_findingaid\ArchivesSpaceIterator;
+use Drupal\aspace_findingaid\ArchivesSpaceSession;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
 
 /**
- * Provide uls_resource migration Source plugin
+ * Provide Archivesspace finding aid migration Source plugin
  *
  * @MigrateSource(
- *   id = "uls_resource"
+ *   id = "aspace_findingaid"
  * )
  */
-class ulsResource extends SourcePluginBase {
+class FindingAidResource extends SourcePluginBase {
 
   /**
    * ArchivesSpace Session object.
-   *
-   * @var Drupal\uls_resource\ArchivesSpaceSession
    */
   protected $session;
 
   /**
-   * Object type we are currently migrating.
+   * Object type to migrate.
    *
    * @var string
    */
@@ -73,7 +71,6 @@ class ulsResource extends SourcePluginBase {
     switch ($this->objectType) {
 
        case 'resources':
-         //echo "STEP1) GET into migration objectType field definition: " .__FILE__.PHP_EOL;
          $this->fields = [
           'uri' => $this->t('URI'),
           'title' => $this->t('Title'),
@@ -167,10 +164,7 @@ class ulsResource extends SourcePluginBase {
    *   An iterator containing the data for this source.
    */
   protected function initializeIterator() {
-
-    //echo "RZ STEP2).Create AS Iterator Instance: " .__FILE__ .PHP_EOL;
     return new ArchivesSpaceIterator($this->objectType, $this->session, $this->repository);
-
   }
 
   /**
@@ -190,7 +184,6 @@ class ulsResource extends SourcePluginBase {
    * {@inheritdoc}
    */
   public function fields() {
-    echo "STEP3). source fields to be migrated:" .__FILE__ .PHP_EOL;
     return $this->fields;
   }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\uls_resource;
+namespace Drupal\aspace_findingaid;
 
 use GuzzleHttp\Client;
 
@@ -11,13 +11,12 @@ class ArchivesSpaceSession {
 
   /**
    * Connection Information.
-   *
    * @var array
    */
   protected $connectionInfo = [
-    'base_uri' => 'https://pittsbapi.as.atlas-sys.com',
-    'username' => 'test',
-    'password' => 'test',
+    'base_uri' => 'https://pittapi.as.atlas-sys.com',
+    'username' => 'admin',
+    'password' => 'admin',
   ];
 
   /**
@@ -77,14 +76,15 @@ class ArchivesSpaceSession {
    * Issues an ArchivesSpace request.
    *
    * @param string $type
-   *   The type of Request to issue (usually GET or POST)
+   *   GET or POST request
    * @param string $path
    *   The API path to use for the request.
    * @param array $parameters
    *   Either GET query parameters or array to POST as JSON.
    * @param bool $binary
-   *   Expect a binary response instead of json.
-   *
+   *   Response format as binary.
+   * @param bool $xml_f
+   *   Expect Response content if set True.
    * @return mixed
    *   Either an array of response data OR
    *   a GuzzleHttp\Psr7\Stream if $binary is true.
@@ -126,9 +126,9 @@ class ArchivesSpaceSession {
   
     $state_config = [];
   
-    $baseUrl =\Drupal::config('uls_resource.settings')->get('archivesspace_base_uri');
-    $userName =\Drupal::config('uls_resource.settings')->get('archivesspace_username'); 
-    $passWord =\Drupal::config('uls_resource.settings')->get('archivesspace_password');
+    $baseUrl =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_base_uri');
+    $userName =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_username'); 
+    $passWord =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_password');
     if ( !empty($baseUrl )) {
 	$state_config['base_uri'] = $baseUrl;
 	}

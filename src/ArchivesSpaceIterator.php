@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\uls_resource;
-if (!defined('ULS_XSLT')) {
-	define('ULS_XSLT', implode(DIRECTORY_SEPARATOR, array(__DIR__, 'uls_ead.xslt')));
+namespace Drupal\aspace_findingaid;
+if (!defined('XSLT_TEMPLATE')) {
+	define('XSLT_TEMPLATE', implode(DIRECTORY_SEPARATOR, array(__DIR__, 'uls_ead.xslt')));
 	}
 if (!defined('FINDINGAID_PREFIX')) {
 	define('FINDINGAID_PREFIX', "Guide to the");
@@ -16,7 +16,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
   /**
    * ArchivesSpace Session object.
    *
-   * @var Drupal\uls_resource\ArchivesSpaceSession
+   * @var Drupal\aspace_findingaid\ArchivesSpaceSession
    */
   protected $session;
 
@@ -185,12 +185,10 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 		$xsl_proc = new \XSLTProcessor();
 		$xsl_proc->registerPHPFunctions();
 		
-    		$viewonlineUri =\Drupal::config('uls_resource.settings')->get('archivesspace_viewonlineuri');                                                 
-    		$readingroomUri =\Drupal::config('uls_resource.settings')->get('archivesspace_readingroomuri');                                                
-    		if ( !empty($viewonlineUri) &&  preg_match("@^https?://@", $viewonlineUri)  ) {                                                                                                           
-        		$xsl_proc->setParameter('', 'viewonlineuri', $viewonlineUri);                                                           
-        		} else  {
-				print 'Error: Invalid resource viewonline URI: ' . $viewonlineUri. PHP_EOL;
+    		$viewonlineUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_viewonlineuri');            		    $readingroomUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_readingroomuri'); 
+    		if ( !empty($viewonlineUri) &&  preg_match("@^https?://@", $viewonlineUri)  ) { 
+        		$xsl_proc->setParameter('', 'viewonlineuri', $viewonlineUri);                                                           } else  {
+			print 'Error: Invalid resource viewonline URI: ' . $viewonlineUri. PHP_EOL;
 			}
 		 if ( !empty($readingroomUri) &&  preg_match("@^https?://@", $readingroomUri)  ) {                 
                         $xsl_proc->setParameter('', 'readingroomuri', $readingroomUri);                            
@@ -201,8 +199,8 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
         	$result = $xsl_proc->importStyleSheet($d_xsl);
         	if(!$result) 
 			{
-                        	print_r(libxml_get_errors());
-				echo PHP_EOL;
+                        	//print_r(libxml_get_errors());
+				echo "Failed to transform resource ead to xml format" .PHP_EOL;
 				libxml_clear_errors();
 				return "";
 			}
@@ -241,7 +239,6 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
    //retrieve resource data needed and its ead information 
    if($this->type == "resources")
 	{
-	//echo "STEP4). Start GET request to resources Type: " . __FILE__ .PHP_EOL;
            $ead_parameters = [
       		'include_unpublished' => "False",
       		'include_daos' => "True",
@@ -250,7 +247,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
                 ];		
 
 	  $file_params = [
-		'file_xslt' => ULS_XSLT,
+		'file_xslt' => XSLT_TEMPLATE,
 		];
           $ead_results=[];
 
@@ -285,9 +282,6 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 		    	$tmp_xml =simplexml_load_string($ead_xml_format);
 			if (!$tmp_xml) { 
 				echo "Failed to load ead raw data ".$item_ead['title'] .PHP_EOL;
-				foreach(libxml_get_errors() as $e) {
-					echo "Error: " . $e->message . PHP_EOL; 
-				}
 				libxml_clear_errors();
 				$ead_location  = null;
 			} else {
@@ -303,7 +297,6 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 				echo "Skip processing resource :" . $item['title'] ." .Check resource data's publish status. " .PHP_EOL;
 			}	
 		}
-                //echo "size of ead result: " . sizeof($ead_results). PHP_EOL;
 		$results['results'] = $ead_results;
 	} else {
     		$results = $this->session->request('GET', $this->repository . '/' . $this->type, $parameters);

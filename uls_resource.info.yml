@@ -1,5 +1,0 @@
-name: ULS resource migration Module
-type: module
-description: ULS archivesSpace resource migration
-core_version_requirement: ^10
-package: Custom

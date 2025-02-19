@@ -1,27 +1,27 @@
 <?php
 
-namespace Drupal\uls_resource\Form;
+namespace Drupal\aspace_findingaid\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Configure resource migration settings
+ * Configure Archivesspace finding aid migration settings
  */
-class ulsResourceForm extends ConfigFormBase {
+class FindingAidResourceForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'uls_resource_config';
+    return 'aspace_findingaid_config';
   }
 
 /**
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['uls_resource.settings'];
+    return ['aspace_findingaid.settings'];
   }
 
   /**
@@ -38,19 +38,19 @@ class ulsResourceForm extends ConfigFormBase {
     $form['connection']['archivesspace_base_uri'] = [
       '#type' => 'textfield',
       '#title' => $this->t('ArchivesSpace API Prefix'),
-      '#config_target' => 'uls_resource.settings:archivesspace_base_uri',
+      '#config_target' => 'aspace_findingaid.settings:archivesspace_base_uri',
     ];
 
     $form['connection']['archivesspace_username'] = [
       '#type' => 'textfield',
       '#title' => $this->t('ArchivesSpace Username'),
-      '#config_target' => 'uls_resource.settings:archivesspace_username', 
+      '#config_target' => 'aspace_findingaid.settings:archivesspace_username', 
     ];
 
     $form['connection']['archivesspace_password'] = [
       '#type' => 'password',
       '#title' => $this->t('ArchivesSpace Password'),
-      '#config_target' => 'uls_resource.settings:archivesspace_password',
+      '#config_target' => 'aspace_findingaid.settings:archivesspace_password',
       '#description'   => t('Leave blank to make no changes, use an invalid string to disable if need be.'),
     ];
 
@@ -63,13 +63,13 @@ class ulsResourceForm extends ConfigFormBase {
     $form['resource_link_prefix']['as_resources_viewonline_uri'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Resource Viewonline Prefix'),
-      '#config_target' => 'uls_resource.settings:archivesspace_viewonlineuri',
+      '#config_target' => 'aspace_findingaid.settings:archivesspace_viewonlineuri',
     ];
 
     $form['resource_link_prefix']['as_resources_readingroom_uri'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Resource Readingroom Prefix'),
-      '#config_target' => 'uls_resource.settings:archivesspace_readingroomuri',
+      '#config_target' => 'aspace_findingaid.settings:archivesspace_readingroomuri',
     ];
 
     return parent::buildForm($form, $form_state);

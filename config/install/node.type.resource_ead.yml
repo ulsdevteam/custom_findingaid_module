@@ -3,7 +3,7 @@ status: true
 dependencies:
   enforced:
     module:
-      - uls_resource
+      - aspace_findingaid
   module:
     - menu_ui
 third_party_settings:
@@ -13,7 +13,7 @@ third_party_settings:
     parent: 'main:'
 name: 'Resource EAD'
 type: resource_ead
-description: 'archivesspace ead migration'
+description: 'archivesspace findingaid migration'
 help: null
 new_revision: true
 preview_mode: 1
