@@ -291,8 +291,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 		    	$item_ead['ead_loc'] = $ead_location; 
                 	array_push($ead_results, $item_ead);
 			} else {
-				\Drupal::logger('aspace_findingaid')->info('Skip processing resource: @obj_title. Check resource  publish status.', 
-										 ['@obj_title' => $item_ead['title'] ]); 
+				\Drupal::logger('aspace_findingaid')->warning('Skip processing resource: @obj_title. Check resource  publish status.', ['@obj_title' => $item['title'] ]); 
 			}	
 		}
 		$results['results'] = $ead_results;
