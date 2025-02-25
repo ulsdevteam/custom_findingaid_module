@@ -4,9 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:ead="urn:isbn:1-931666-22-9"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:php="http://php.net/xsl"
-  xsl:extension-element-prefixes="php"
-  exclude-result-prefixes="xsl ead xlink php"
+  exclude-result-prefixes="xsl ead xlink"
 >
   <xsl:param name="containerlist_string">Container List</xsl:param>
   <xsl:param name="container_string">Containers</xsl:param>
@@ -382,11 +380,7 @@
   </xsl:template>
 
   <xsl:template name="flat_container">
-    <xsl:variable name="query_url">
-      <xsl:if test="$call_query_link = 'true'">
-        <xsl:value-of select="php:function('islandora_manuscript_build_flat_query_url', ead:container)" />
-      </xsl:if>
-    </xsl:variable>
+    <xsl:variable name="query_url"/>
     <dd class="ead-container ead-container-flat">
       <xsl:choose>
       <xsl:when test="normalize-space($query_url)">
@@ -424,11 +418,7 @@
 
   <xsl:template match="ead:container" mode="parent">
     <xsl:variable name="containers" select="//ead:container"/>
-    <xsl:variable name="query_url">
-      <xsl:if test="$call_query_link = 'true'">
-        <xsl:value-of select="php:function('islandora_manuscript_build_parented_query_url', current(), $containers)" />
-      </xsl:if>
-    </xsl:variable>
+    <xsl:variable name="query_url"/>
     <dd class="ead-container ead-container-nested">
       <xsl:choose>
       <xsl:when test="normalize-space($query_url)">

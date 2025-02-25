@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\aspace_findingaid;
+
 if (!defined('XSLT_TEMPLATE')) {
 	define('XSLT_TEMPLATE', implode(DIRECTORY_SEPARATOR, array(__DIR__, 'uls_ead.xslt')));
 	}
@@ -181,44 +182,40 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 	$d_xml= new \DOMDocument();
 	$d_xsl= new \DOMDocument();
         try {
-		if ($d_xml->loadXML($xml) and $d_xsl->load($file_params["file_xslt"])) {
-		$xsl_proc = new \XSLTProcessor();
-		$xsl_proc->registerPHPFunctions();
-		
-    		$viewonlineUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_viewonlineuri');            		    $readingroomUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_readingroomuri'); 
-    		if ( !empty($viewonlineUri) &&  preg_match("@^https?://@", $viewonlineUri)  ) { 
-        		$xsl_proc->setParameter('', 'viewonlineuri', $viewonlineUri);                                                           } else  {
-			print 'Error: Invalid resource viewonline URI: ' . $viewonlineUri. PHP_EOL;
+		if ( $d_xml->loadXML($xml) and $d_xsl->load($file_params["file_xslt"]) ) {
+			$xsl_proc = new \XSLTProcessor();
+			$viewonlineUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_viewonlineuri');
+			$readingroomUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_readingroomuri'); 
+			if ( !empty($viewonlineUri) &&  preg_match("@^https?://@", $viewonlineUri)  ) { 
+				$xsl_proc->setParameter('', 'viewonlineuri', $viewonlineUri);
+			} else  {
+				\Drupal::logger('aspace_findingaid')->error('Invalid resource viewonline URI: @uri', ['@uri' => $viewonlineUri]);
 			}
-		 if ( !empty($readingroomUri) &&  preg_match("@^https?://@", $readingroomUri)  ) {                 
-                        $xsl_proc->setParameter('', 'readingroomuri', $readingroomUri);                            
-                        } else  {                                                                     
-                                print 'Error: Invalid resource viewonline URI: ' . $readingroomUri. PHP_EOL;
-                        }       
-        	libxml_use_internal_errors(true);
-        	$result = $xsl_proc->importStyleSheet($d_xsl);
-        	if(!$result) 
-			{
-                        	//print_r(libxml_get_errors());
-				echo "Failed to transform resource ead to xml format" .PHP_EOL;
+			if ( !empty($readingroomUri) &&  preg_match("@^https?://@", $readingroomUri)  ) {
+				$xsl_proc->setParameter('', 'readingroomuri', $readingroomUri);
+			} else  {
+				\Drupal::logger('aspace_findingaid')->error('Invalid resource readingroom URI: @rmuri', ['@rmuri' => $readingroomUri]);
+			}
+			libxml_use_internal_errors(true);
+			$result = $xsl_proc->importStyleSheet($d_xsl);
+			if( !$result ) {
+				\Drupal::logger('aspace_findingaid')->warning('Failed to transform resource ead to xml format');
 				libxml_clear_errors();
 				return "";
+			} else {
+				libxml_use_internal_errors(false);
+				$xml_result = $xsl_proc->transformToDoc($d_xml);
+				//save tranformed xml doc as local htmlfile
+				$f_content = $xml_result->saveHTML();
+				return $f_content;
 			}
-		else {
-       			libxml_use_internal_errors(false);
-         		//transform
-         		$xml_result = $xsl_proc->transformToDoc($d_xml);
-			//save tranformed xml doc as local htmlfile
-         		$f_content = $xml_result->saveHTML();
-			return $f_content;
- 		     }	
 		}
 	}
 	catch (Exception $e) {
-		echo "Error: failed to process ead to xml: " . $e->getMessage(). PHP_EOL;
+		\Drupal::logger('aspace_findingaid')->error('Failed to process ead to xml: @msg.', ['@msg' => $e->getMessage()]);
 		}
         return "";
-	}
+}
 
   /**
    * Loads a page of ArchivesSpace results.
@@ -281,7 +278,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 			libxml_use_internal_errors(true); //store error in memory
 		    	$tmp_xml =simplexml_load_string($ead_xml_format);
 			if (!$tmp_xml) { 
-				echo "Failed to load ead raw data ".$item_ead['title'] .PHP_EOL;
+				\Drupal::logger('aspace_findingaid')->error('Failed to load ead raw data: @title', ['@title' => $item_ead['title'] ]);
 				libxml_clear_errors();
 				$ead_location  = null;
 			} else {
@@ -289,12 +286,13 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 		    		$ead_location = $this->ead_to_html($tmp_xml->asXML(), $ead_fname, $file_params);
 			}	
 			if (empty($ead_location)) { 
-				echo "Failed transforming ead to html: " .$item_ead['title'] .PHP_EOL;
+				\Drupal::logger('aspace_findingaid')->warning('Failed to tranform ead to html: @loc', ['@loc' => $item_ead['title'] ]); 
 				} 
 		    	$item_ead['ead_loc'] = $ead_location; 
                 	array_push($ead_results, $item_ead);
 			} else {
-				echo "Skip processing resource :" . $item['title'] ." .Check resource data's publish status. " .PHP_EOL;
+				\Drupal::logger('aspace_findingaid')->info('Skip processing resource: @obj_title. Check resource  publish status.', 
+										 ['@obj_title' => $item_ead['title'] ]); 
 			}	
 		}
 		$results['results'] = $ead_results;
