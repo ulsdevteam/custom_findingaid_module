@@ -7,16 +7,11 @@ field_plugin_method: null
 cck_plugin_method: null
 migration_tags: null
 migration_group: aspace_findingaid
-default_config_hash:
-  - ''
 label: 'Archivesspace Finding Aid'
 source:
   plugin: aspace_findingaid
   object_type: resources
-  base_uri: 'https://pittapi.as.atlas-sys.com'
   repository: /repositories/10
-  username: admin
-  password: admin
   keys:
     - uri
 process:
@@ -39,7 +34,11 @@ process:
   field_resource_identifier:
     -
       plugin: concat
-      source: ['id_0', 'id_1', 'id_2', 'id_3']
+      source:
+        - id_0
+        - id_1
+        - id_2
+        - id_3
       delimiter: '-'
     -
       plugin: str_replace
@@ -50,7 +49,7 @@ process:
   body/value: ead_loc
   body/format:
     plugin: default_value
-    default_value: full_html 
+    default_value: full_html
   field_uri: uri
 destination:
   plugin: 'entity:node'

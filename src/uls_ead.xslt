@@ -380,21 +380,8 @@
   </xsl:template>
 
   <xsl:template name="flat_container">
-    <xsl:variable name="query_url"/>
     <dd class="ead-container ead-container-flat">
-      <xsl:choose>
-      <xsl:when test="normalize-space($query_url)">
-        <a class="ead-external-link">
-          <xsl:attribute name="href">
-            <xsl:value-of select="$query_url"/>
-          </xsl:attribute>
-          <xsl:apply-templates select="ead:container[1]" mode="flat_text"/>
-        </a>
-      </xsl:when>
-      <xsl:otherwise>
         <xsl:apply-templates select="ead:container[1]" mode="flat_text"/>
-      </xsl:otherwise>
-      </xsl:choose>
     </dd>
   </xsl:template>
 
@@ -418,21 +405,8 @@
 
   <xsl:template match="ead:container" mode="parent">
     <xsl:variable name="containers" select="//ead:container"/>
-    <xsl:variable name="query_url"/>
     <dd class="ead-container ead-container-nested">
-      <xsl:choose>
-      <xsl:when test="normalize-space($query_url)">
-        <a class="ead-external-link">
-          <xsl:attribute name="href">
-            <xsl:copy-of select="$query_url"/>
-          </xsl:attribute>
-          <xsl:apply-templates select="." mode="parent_text"/>
-        </a>
-      </xsl:when>
-      <xsl:otherwise>
         <xsl:apply-templates select="." mode="parent_text"/>
-      </xsl:otherwise>
-      </xsl:choose>
     </dd>
   </xsl:template>
 
