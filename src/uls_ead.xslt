@@ -4,7 +4,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:ead="urn:isbn:1-931666-22-9"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  exclude-result-prefixes="xsl ead xlink"
+  xmlns:php="http://php.net/xsl"
+  exclude-result-prefixes="xsl ead xlink php"
 >
   <xsl:param name="containerlist_string">Container List</xsl:param>
   <xsl:param name="container_string">Containers</xsl:param>
@@ -28,11 +29,10 @@
   <xsl:param name="subfonds_string">Subfonds</xsl:param>
   <xsl:param name="file_string">File</xsl:param>
   <xsl:param name="item_string">Item</xsl:param>
-  <xsl:param name="call_query_link" />
 
   <!--ArchivesSpace module resource uri prefix -->
-  <xsl:param name="readingroomuri" />
   <xsl:param name="viewonlineuri" />
+  <xsl:param name="base_aeon_url" />
 
   <xsl:template match="/">
     <div class="ead">
@@ -91,15 +91,122 @@
 
   <!-- Access to Reading room from the specific digital object reference id -->
  
+   <!--url encode -->
+  <xsl:template name="urlencode">
+	<xsl:param name="paramdata" />
+	<xsl:value-of select="php:function('urlencode', php:function('strip_tags', string($paramdata)))"/>
+  </xsl:template>
+
+
   <xsl:template name="access_readingrm">
     <xsl:param name="element" select="current()"/>
     <xsl:if test= "$element[@id] != ''">
-        <xsl:variable name="readingroom">
-                <xsl:value-of select="$readingroomuri"/><xsl:value-of select="substring(@id,8)"/>
-        </xsl:variable>
+    <!-- define aeon parameters -->
+    <xsl:variable name="EADnumber" select="/ead:ead/ead:eadheader/ead:eadid"/>
+    <xsl:variable name="Callnumber" select="normalize-space(/ead:ead/ead:archdesc[@level='collection']/ead:did/ead:unitid[not(@*)])"/>
+    <xsl:variable name="ItemAuthor" select="normalize-space(/ead:ead/ead:archdesc[@level='collection']/ead:did/ead:origination/ead:persname)"/>
+    <xsl:variable name="ItemCitation" select="normalize-space(/ead:ead/ead:archdesc[@level='collection']/ead:prefercite/ead:p) "/>
+    <xsl:variable name="ItemDate" select="normalize-space(ead:did/ead:unitdate)"/>
+    <xsl:variable name="ItemInfo1" select="normalize-space(ancestor::*[local-name()='c1'][1]/ead:did/ead:unittitle)"/>
+    <xsl:variable name="ItemInfo2" 
+select="(ead:accessrestrict/ead:p|ancestor::*[local-name()='c1']/ead:accessrestrict/ead:p|/ead:ead/ead:archdesc[@level='collection']/ead:accessrestrict/ead:p)[1]"/>
+    <xsl:variable name="ItemNumber" select="substring-before(substring-after(ead:did/ead:container[@type='box']/@label,'['), ']')"/>
+    <xsl:variable name="ItemTitle" select="normalize-space(/ead:ead/ead:archdesc[@level='collection']/ead:did/ead:unittitle)"/>
+    <xsl:variable name="ItemSubTitle" select="normalize-space(concat(parent::*/ead:did/ead:unittitle, ' , ',parent::*/ead:did/ead:unitid[not(@*)]))"/>
+    <xsl:variable name="ItemVolume" select="concat(ead:did/ead:container[not(@parent)]/@type,' ', ead:did/ead:container[not(@parent)])"/>
+    <xsl:variable name="ItemIssue" select="concat(ead:did/ead:container[@parent]/@type,' ', ead:did/ead:container[@parent])"/>
+    <xsl:variable name="readingroom_aeon">
+                <xsl:value-of select="$base_aeon_url"/>
+		<xsl:if test="$EADnumber != ''">
+			<xsl:text>&amp;EADnumber=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$EADnumber" />
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if test="$Callnumber != ''">
+			<xsl:text>&amp;CallNumber=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$Callnumber" />
+			</xsl:call-template>
+		</xsl:if>
+		
+		<!--collection name: Aeon label it as Location -->
+		<xsl:if test="$ItemTitle != ''">
+			<xsl:text>&amp;ItemTitle=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$ItemTitle" />
+			</xsl:call-template>
+		</xsl:if>
+
+		<xsl:if test="$ItemSubTitle != ''">
+			<xsl:text>&amp;ItemSubTitle=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$ItemSubTitle" />
+			</xsl:call-template>
+		</xsl:if>
+
+		<xsl:if test="$ItemInfo1 != ''">
+			<xsl:text>&amp;ItemInfo1=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$ItemInfo1" />
+			</xsl:call-template>
+		</xsl:if>
+
+		<!--Restriction -->
+		<xsl:text>&amp;ItemInfo2=</xsl:text>
+                <xsl:if test="normalize-space($ItemInfo2) != ''">	
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$ItemInfo2" />
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if test="not(normalize-space($ItemInfo2) != '')">
+			<xsl:text>No restrictions.</xsl:text>
+		</xsl:if>
+		
+		<!-- barcode -->
+		<xsl:if test="normalize-space($ItemNumber) != ''">
+			<xsl:text>&amp;ItemNumber=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$ItemNumber" />
+			</xsl:call-template>
+		</xsl:if>
+
+		<xsl:if test="$ItemAuthor != ''">
+			<xsl:text>&amp;ItemAuthor=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$ItemAuthor" />
+			</xsl:call-template>
+		</xsl:if>
+		
+		<xsl:if test="$ItemCitation != ''">
+			<xsl:text>&amp;ItemCitation=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$ItemCitation" />
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if test="$ItemDate != ''">
+			<xsl:text>&amp;ItemDate=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$ItemDate" />
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if test="$ItemVolume != ''">
+			<xsl:text>&amp;ItemVolume=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$ItemVolume" />
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if test="$ItemIssue != ''">
+			<xsl:text>&amp;ItemIssue=</xsl:text>
+			<xsl:call-template name="urlencode">
+				<xsl:with-param name="paramdata" select="$ItemIssue" />
+			</xsl:call-template>
+		</xsl:if>        
+	</xsl:variable> 
+
         <a class="astraeus-target">
           <xsl:attribute name="href">
-            <xsl:value-of select="$readingroom"/>
+            <xsl:value-of select="$readingroom_aeon"/>
           </xsl:attribute>
           <xsl:attribute name="target">_blank</xsl:attribute>
 	  <xsl:attribute name="style">float: right;text-decoration: none!important;</xsl:attribute>

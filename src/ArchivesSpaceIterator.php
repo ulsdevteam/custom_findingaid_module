@@ -184,6 +184,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
         try {
 		if ( $d_xml->loadXML($xml) and $d_xsl->load($file_params["file_xslt"]) ) {
 			$xsl_proc = new \XSLTProcessor();
+      			$xsl_proc->registerPHPFunctions();
 			$viewonlineUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_viewonlineuri');
 			$readingroomUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_readingroomuri'); 
 			if ( !empty($viewonlineUri) &&  preg_match("@^https?://@", $viewonlineUri)  ) { 
@@ -192,7 +193,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 				\Drupal::logger('aspace_findingaid')->error('Invalid resource viewonline URI: @uri', ['@uri' => $viewonlineUri]);
 			}
 			if ( !empty($readingroomUri) &&  preg_match("@^https?://@", $readingroomUri)  ) {
-				$xsl_proc->setParameter('', 'readingroomuri', $readingroomUri);
+				$xsl_proc->setParameter('', 'base_aeon_url', $readingroomUri);
 			} else  {
 				\Drupal::logger('aspace_findingaid')->error('Invalid resource readingroom URI: @rmuri', ['@rmuri' => $readingroomUri]);
 			}
