@@ -110,7 +110,7 @@
     <xsl:variable name="ItemDate" select="normalize-space(ead:did/ead:unitdate)"/>
     <xsl:variable name="ItemInfo1" select="normalize-space(ancestor::*[local-name()='c' and @level='series'][1]/ead:did/ead:unittitle)"/>
     <xsl:variable name="ItemInfo2" 
-select="(ead:accessrestrict/ead:p|ancestor::*[local-name()='c1']/ead:accessrestrict/ead:p|/ead:ead/ead:archdesc[@level='collection']/ead:accessrestrict/ead:p)[1]"/>
+select="(ead:accessrestrict/ead:p|ancestor::*[local-name()='c' and @level='series'][1]/ead:accessrestrict/ead:p|/ead:ead/ead:archdesc[@level='collection']/ead:accessrestrict/ead:p)[1]"/>
     <xsl:variable name="ItemNumber" select="substring-before(substring-after(ead:did/ead:container[@type='box']/@label,'['), ']')"/>
     <xsl:variable name="ItemTitle" select="normalize-space(/ead:ead/ead:archdesc[@level='collection']/ead:did/ead:unittitle)"/>
     <xsl:variable name="ItemSubTitle" select="normalize-space(concat(parent::*/ead:did/ead:unittitle, ' , ',parent::*/ead:did/ead:unitid[not(@*)]))"/>
