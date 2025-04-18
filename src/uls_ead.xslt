@@ -32,6 +32,7 @@
 
   <!--ArchivesSpace module resource uri prefix -->
   <xsl:param name="viewonlineuri" />
+  <!--Ensure to add a Question Mark in base_aeon_url to signify the beginning of query parameters -->
   <xsl:param name="base_aeon_url" />
 
   <xsl:template match="/">
@@ -107,7 +108,7 @@
     <xsl:variable name="ItemAuthor" select="normalize-space(/ead:ead/ead:archdesc[@level='collection']/ead:did/ead:origination/ead:persname)"/>
     <xsl:variable name="ItemCitation" select="normalize-space(/ead:ead/ead:archdesc[@level='collection']/ead:prefercite/ead:p) "/>
     <xsl:variable name="ItemDate" select="normalize-space(ead:did/ead:unitdate)"/>
-    <xsl:variable name="ItemInfo1" select="normalize-space(ancestor::*[local-name()='c1'][1]/ead:did/ead:unittitle)"/>
+    <xsl:variable name="ItemInfo1" select="normalize-space(ancestor::*[local-name()='c' and @level='series'][1]/ead:did/ead:unittitle)"/>
     <xsl:variable name="ItemInfo2" 
 select="(ead:accessrestrict/ead:p|ancestor::*[local-name()='c1']/ead:accessrestrict/ead:p|/ead:ead/ead:archdesc[@level='collection']/ead:accessrestrict/ead:p)[1]"/>
     <xsl:variable name="ItemNumber" select="substring-before(substring-after(ead:did/ead:container[@type='box']/@label,'['), ']')"/>
@@ -158,9 +159,6 @@ select="(ead:accessrestrict/ead:p|ancestor::*[local-name()='c1']/ead:accessrestr
 			<xsl:call-template name="urlencode">
 				<xsl:with-param name="paramdata" select="$ItemInfo2" />
 			</xsl:call-template>
-		</xsl:if>
-		<xsl:if test="not(normalize-space($ItemInfo2) != '')">
-			<xsl:text>No restrictions.</xsl:text>
 		</xsl:if>
 		
 		<!-- barcode -->
