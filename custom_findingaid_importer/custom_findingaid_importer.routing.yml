@@ -1,0 +1,7 @@
+custom_findingaid_importer.config_form:
+  path: '/admin/config/findingaid_xslt_upload'
+  defaults:
+    _form: '\Drupal\custom_findingaid_importer\Form\FindingaidXSLTForm'
+    _title: 'Custom Finding Aid XSLT Settings'
+  requirements:
+    _permission: 'administer site configuration'

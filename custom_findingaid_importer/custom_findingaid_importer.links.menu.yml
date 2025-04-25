@@ -1,0 +1,17 @@
+custom_findingaid_importer.settings:
+  title: 'Resource XSLT settings'
+  parent: system.admin_config
+  route_name: custom_findingaid_importer.config_form
+  weight: 100
+
+custom_findingaid_importer.custom_findingaid_importer_config:
+  title: 'Config'
+  parent: custom_findingaid_importer.settings
+  route_name: custom_findingaid_importer.config_form
+  weight: 10
+
+custom_findingaid_importer.xml_upload_form:
+  title: 'Upload xml and transform'
+  parent: system.admin_content
+  route_name: custom_findingaid_importer.xml_upload_form
+  weight: 100

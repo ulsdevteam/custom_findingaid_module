@@ -1,0 +1,23 @@
+custom_findingaid_importer.settings:
+  type: config_object
+  label: 'Custom FindingAid XSLT and Aeon Pairs settings'
+  mapping:
+    xslt_aeon_files:
+      type: sequence
+      label: 'XSLT and Aeon file pairs'
+      sequence:
+        type: mapping
+        label: 'configuration files pair'
+        mapping:
+          xslt_file:
+            type: file
+            label: 'custom Finding Aid XSLT'
+          file_desc:
+            type: string
+            label: 'File configuration description'
+            constraints:
+              NotBlank:
+                message: "Please set finding aid xslt config description"
+          aeon_baseurl:
+            type: string
+            label: 'Aeon base uri'
