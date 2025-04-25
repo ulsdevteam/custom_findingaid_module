@@ -184,7 +184,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
         try {
 		if ( $d_xml->loadXML($xml) and $d_xsl->load($file_params["file_xslt"]) ) {
 			$xsl_proc = new \XSLTProcessor();
-      			$xsl_proc->registerPHPFunctions();
+      $xsl_proc->registerPHPFunctions();
 			$viewonlineUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_viewonlineuri');
 			$readingroomUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_readingroomuri'); 
 			if ( !empty($viewonlineUri) &&  preg_match("@^https?://@", $viewonlineUri)  ) { 

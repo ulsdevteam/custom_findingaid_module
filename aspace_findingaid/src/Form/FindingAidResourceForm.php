@@ -68,10 +68,9 @@ class FindingAidResourceForm extends ConfigFormBase {
 
     $form['resource_link_prefix']['as_resources_readingroom_uri'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Resource Readingroom Prefix'),
+      '#title' => $this->t('Aeon Portal URI Prefix'),
       '#config_target' => 'aspace_findingaid.settings:archivesspace_readingroomuri',
     ];
-
     return parent::buildForm($form, $form_state);
   }
 }
