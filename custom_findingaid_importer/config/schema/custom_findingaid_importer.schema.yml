@@ -21,3 +21,6 @@ custom_findingaid_importer.settings:
           aeon_baseurl:
             type: string
             label: 'Aeon base uri'
+    xslt_file_path:
+      type: string
+      label: 'XSLT uploaded path'
