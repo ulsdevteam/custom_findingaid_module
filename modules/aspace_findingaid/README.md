@@ -2,8 +2,8 @@
 
 This module is designed to utilize an exsiting drupal archivesspace module to facilitate archivesspace finding aid data migration to drupal site
 ## Usage
-1. Install the module
-    - Install via composer (`composer require drupal/aspace_findingaid`)
+1. Install the module from its parent module 'custom_findingaid_module'
+    - Install via composer (`composer require drupal/custom_findingaid_module`)
 2. Enable the module and its dependencies
     -   `drush en -y migrate_tools, migrate_plus`
     -   `drush en -y aspace_findingaid`
