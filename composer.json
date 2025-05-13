@@ -5,6 +5,7 @@
   "keywords": ["Drupal"],
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "drupal/migrate_plus": "^6.0",
     "drupal/migrate_tools": "^6.0"
