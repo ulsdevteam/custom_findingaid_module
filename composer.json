@@ -1,5 +1,5 @@
 {
-  "name": "drupal/aspace_findingaid",
+  "name": "drupal/custom_findingaid_module",
   "type": "drupal-module-custom",
   "description": "A custom module to provide ArchivesSpace resource data to Drupal",
   "keywords": ["Drupal"],
