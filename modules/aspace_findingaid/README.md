@@ -1,12 +1,12 @@
-# Archivesspace Finding Aid Migration
+# ArchivesSpace Finding Aid Migration
 
-This module is designed to utilize an exsiting drupal archivesspace module to facilitate archivesspace finding aid data migration to drupal site
+This module is a sub-module of a new defined drupal customized module 'custom findingaid module'. It is designed to utilize an exsiting drupal archivesspace module to facilitate archivesspace finding aid data migration to drupal site
 ## Usage
-1. Install the module from its parent module 'custom_findingaid_module'
+1. Install module 'custom findingaid module'
     - Install via composer (`composer require drupal/custom_findingaid_module`)
-2. Enable the module and its dependencies
-    -   `drush en -y migrate_tools, migrate_plus`
-    -   `drush en -y aspace_findingaid`
+2. Enable the module and its dependencies via drush or Drupal site
+    -  via drush: First enable its dependencies module `drush en -y custom_findingaid_importer`, then enable `drush en -y aspace_findingaid`
+    -  via Drupal site: Go to Extend/Install new module, locate custom module 'Custom Finding Aid Importer Module', and install it;       then locate 'Archivesspace Finding Aid module Migration' and install.
     -   Confirm modules status (`drush pml --type=module --status=enabled | grep migrate_plus`) 
 3. Configurate Module Settings
    Archivesspace Finding Aid migration uses ArchivesSpace API endpoint. The Resource prefix uris are used to link its associated objects contained in the resource. Please visit  `/admin/configuration/Resource EAD settings` in your Drupal site to configure these settings before migration.

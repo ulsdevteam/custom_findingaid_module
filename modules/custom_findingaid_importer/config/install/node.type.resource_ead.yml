@@ -3,7 +3,7 @@ status: true
 dependencies:
   enforced:
     module:
-      - aspace_findingaid
+      - custom_findingaid_importer
   module:
     - menu_ui
 third_party_settings:

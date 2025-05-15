@@ -83,7 +83,7 @@ class FindingaidXSLTForm extends ConfigFormBase {
     $form['add_xslt_aeon'] = [
 	      '#type' => 'submit',
 	      '#name' => 'add_xslt_aeon',
-	      '#value' => $this->t('Add another XSLT_AEON file configuration'),
+	      '#value' => $this->t('Add another XSLT-AEON file configuration'),
 	      '#submit' => ['::add_XSLT_AEON']
 	    ];
 
