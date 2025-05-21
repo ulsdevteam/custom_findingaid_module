@@ -53,13 +53,13 @@ class FindingaidXSLTForm extends ConfigFormBase {
     for ($i = 1; $i < $num_xslt_aeon; $i++) {
         $form["xslt_aeon_files"] = [
             '#type' => 'fieldset',
-            '#title' => t('Upload a new Finding aid XSLT-AEON configuration'),
+            '#title' => t('Upload a new Finding aid XSLT configuration'),
             '#tree' => TRUE, // set a hierarchy on xslt files to easily get value	
           ];
         $form["xslt_aeon_files"][$i]['file_desc'] =[
             '#type' => 'textfield',
-            '#title' => $this->t('XSLT-AEON configuration description'),
-            '#description' => $this->t('The new Finding aid XSLT-AEON configuration description'),
+            '#title' => $this->t('XSLT configuration description'),
+            '#description' => $this->t('The new Finding aid XSLT configuration description'),
             '#required' => FALSE,
           ];
         $form["xslt_aeon_files"][$i]['xslt_file'] =[
@@ -72,18 +72,13 @@ class FindingaidXSLTForm extends ConfigFormBase {
 			'#upload_location' => $upload_path,
 			'#required' => FALSE,
             ];
-        $form["xslt_aeon_files"][$i]['aeon_baseurl'] =[
-            '#type' => 'textfield',
-            '#title' => $this->t('AEON baseUrl Setting'),
-            '#description' => $this->t('The AEON baseUrl used to link Finding aids'),
-            ];
         }    
 	  
     //add additional configurations 
     $form['add_xslt_aeon'] = [
 	      '#type' => 'submit',
 	      '#name' => 'add_xslt_aeon',
-	      '#value' => $this->t('Add another XSLT-AEON file configuration'),
+	      '#value' => $this->t('Add a new XSLT configuration'),
 	      '#submit' => ['::add_XSLT_AEON']
 	    ];
 
@@ -91,7 +86,7 @@ class FindingaidXSLTForm extends ConfigFormBase {
      if ( !empty($existing_xslt_aeon_files) ) {
 	      $form['existing_xslt_aeon_pairs'] = [
 		    '#type' => 'details',
-		    '#title' => t('Existing XSLT-AEON configurations to process Finding aids'),
+		    '#title' => t('Existing XSLT configurations to process Finding aids'),
 		    '#open' => TRUE,
 	      ];
 	      //iterate available xslt-aeon pairs for display:
@@ -138,43 +133,40 @@ class FindingaidXSLTForm extends ConfigFormBase {
     //new pair uploaded
     foreach ($form_state->getValue('xslt_aeon_files', []) as $key=>$file_data) {  
 	      if ( !empty($file_data['xslt_file'][0])  ) {
-        	  $file_desc = $file_data['file_desc'];
-		  $aeon_baseurl = $file_data['aeon_baseurl'];
-		  $file = File::load($file_data['xslt_file'][0]);
-		  if ($file) {
-			  $filename = $file->getFilename();
-			  $file_obj = \Drupal::entityTypeManager()->getStorage('file')->load($file->id());
-            		  //remove all the traillig pattern added by drupal, eg use 'testfile'as key for file testfile_100.xsl
-			  $fname = preg_replace('/^(.*?)(?:_\d+)?\.[^.]*$/', '$1', $filename); 
-			  $curr_template = $config->get('xslt_aeon_files.'.$file_desc);
-			  if ( $curr_template)  {
-		 //delete previous xslt if endUser set a same configuration desc and upload xslt with the same filename
-		 		$inner_key = 'xslt_file';
+			$file_desc = $file_data['file_desc'];
+			$curr_template = $config->get('xslt_aeon_files.'.$file_desc);
+			$file = File::load($file_data['xslt_file'][0]);
+				if ($file) {
+					$filename = $file->getFilename();
+			  		$file_obj = \Drupal::entityTypeManager()->getStorage('file')->load($file->id());
+					//remove all the traillig pattern added by drupal, eg use 'testfile'as key for file testfile_100.xsl
+					$fname = preg_replace('/^(.*?)(?:_\d+)?\.[^.]*$/', '$1', $filename); 
+					if ( $curr_template)  {
+						//delete previous xslt if endUser set a same configuration desc and upload xslt with the same filename
+						$inner_key = 'xslt_file';
                 		$fid = $curr_template[$inner_key];
-				$prev_file = File::load($fid);
-				if ($prev_file) {
-					$prev_file->delete();
+						$prev_file = File::load($fid);
+						if ($prev_file) {
+							$prev_file->delete();
+						}
 					}
-			  }
-			  //save file
-			  $file->setPermanent();
-			  $file->save();
-                \Drupal::logger('custom_findingaid_importer')->info('File @fname uploaded successfully to @fpath',
-                    ['@fname'=>$filename, '@fpath'=>$file_obj->getFileUri(),]);
-
-			  //store configurations
-			  $new_upload_files[$file_desc] = [
-				  'xslt_file' => $file->id(),
-				  'aeon_baseurl' => $aeon_baseurl,
-			  ];
-                //now save all xslt files to configuration
-                	  $updated_files = array_merge($existing_xslt_aeon_files, $new_upload_files);
-			  $config->set('xslt_aeon_files', $updated_files)->save();
-		  }
-	      }
-         }
-      parent::submitForm($form, $form_state);
-  }
+					//save file
+					$file->setPermanent();
+					$file->save();
+					\Drupal::logger('custom_findingaid_importer')->info('File @fname uploaded successfully to @fpath',
+						['@fname'=>$filename, '@fpath'=>$file_obj->getFileUri(),]);
+			  		//store configurations
+			  		$new_upload_files[$file_desc] = [
+				  		'xslt_file' => $file->id(),
+			  		];
+                	//now save all xslt files to configuration
+                	$updated_files = array_merge($existing_xslt_aeon_files, $new_upload_files);
+			  		$config->set('xslt_aeon_files', $updated_files)->save();
+		  		}	
+			}
+    }
+    parent::submitForm($form, $form_state);
+}
 
 /**                                                                                   
  * {@inheritdoc}                                                                      

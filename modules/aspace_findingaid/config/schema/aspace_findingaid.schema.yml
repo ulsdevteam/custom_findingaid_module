@@ -14,11 +14,3 @@ aspace_findingaid.settings:
     archivesspace_password:
       type: string
       label: 'ArchivesSpace API Password'
-    archivesspace_viewonlineuri:
-      type: string
-      label: 'Resource Viewonline Prefix'
-    archivesspace_readingroomuri:                                      
-      type: string 
-      label: 'Resource Readingroom Prefix'
-
-

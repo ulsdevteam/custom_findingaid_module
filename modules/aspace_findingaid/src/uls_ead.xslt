@@ -31,9 +31,9 @@
   <xsl:param name="item_string">Item</xsl:param>
 
   <!--ArchivesSpace module resource uri prefix -->
-  <xsl:param name="viewonlineuri" />
+  <xsl:param name="viewonlineuri"  select="'https://digital.library.pitt.edu/islandora/object/pitt:'"/>
   <!--Ensure to add a Question Mark in base_aeon_url to signify the beginning of query parameters -->
-  <xsl:param name="base_aeon_url" />
+  <xsl:param name="base_aeon_url"  select="'https://pitt.aeon.atlas-sys.com/logon?Action=10&amp;Form=20&amp;value=GenericRequestManuscript'"/>
 
   <xsl:template match="/">
     <div class="ead">

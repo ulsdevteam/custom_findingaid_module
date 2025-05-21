@@ -36,7 +36,6 @@ use Drupal\custom_findingaid_importer\Utility\xmlTransformerHelper;
         $xslt_files =$config->get('xslt_aeon_files') ?: [];
         foreach ($xslt_files as $fkey => $fdata) {
                 //$fkey is file_desc
-                $tmp_baseurl = $fdata['aeon_baseurl'];
                 $tmp_fid = $fdata['xslt_file'];
                 $file = File::load($tmp_fid);
                 $xslt_opts[$fkey] = $fkey;

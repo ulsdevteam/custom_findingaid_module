@@ -54,23 +54,6 @@ class FindingAidResourceForm extends ConfigFormBase {
       '#description'   => t('Leave blank to make no changes, use an invalid string to disable if need be.'),
     ];
 
-    $form['resource_link_prefix'] = [
-      '#type' => 'details',
-      '#title' => t('Resource Link Prefixs'),
-      '#open' => TRUE,
-    ];
-
-    $form['resource_link_prefix']['as_resources_viewonline_uri'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Resource Viewonline Prefix'),
-      '#config_target' => 'aspace_findingaid.settings:archivesspace_viewonlineuri',
-    ];
-
-    $form['resource_link_prefix']['as_resources_readingroom_uri'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Aeon Portal URI Prefix'),
-      '#config_target' => 'aspace_findingaid.settings:archivesspace_readingroomuri',
-    ];
     return parent::buildForm($form, $form_state);
   }
 }

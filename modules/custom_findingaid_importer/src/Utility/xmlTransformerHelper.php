@@ -36,54 +36,20 @@ class xmlTransformerHelper {
 			return FALSE;
 		}
 		$xslt_path = \Drupal::service('file_system')->realpath($xslt_file->getFileUri());
-       
-	        //load xml document from the uploaded file path
-        	$xml_doc = new  \DOMDocument();
-        	if ( !$xml_doc->load($data_parameters['xml_path']) ) {
+       //load xml document from the uploaded file path
+        $xml_doc = new  \DOMDocument();
+        if ( !$xml_doc->load($data_parameters['xml_path']) ) {
 			\Drupal::logger('custom_findingaid_importer')->error('Failed to load the xml file.');
 			return FALSE;
-			}
-
-        	$xsl= new \DOMDocument();
-        	if ( !$xsl->load($xslt_path) ) {
+		}
+        $xsl= new \DOMDocument();
+        if ( !$xsl->load($xslt_path) ) {
 			\Drupal::logger('custom_findingaid_importer')->error('Failed to load the xslt file.');
-                        return FALSE;   	
-			}
-
-        	//transform
-        	$proc = new \XSLTProcessor();
-			$proc->registerPHPFunctions();
-		//set xslt parameter from drupal configuration
-		 $viewonlineUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_viewonlineuri');
-         //$readingroomUri =\Drupal::config('aspace_findingaid.settings')->get('archivesspace_readingroomuri');
-                 if ( !empty($viewonlineUri) &&  preg_match("@^https?://@", $viewonlineUri)  ) {
-                 	$proc->setParameter('', 'viewonlineuri', $viewonlineUri);
-                 } else  {
-                 	\Drupal::logger('aspace_findingaid')->error('Invalid resource viewonline URI: @uri', ['@uri' => $viewonlineUri]);
-                 }
-				 /*
-                 if ( !empty($readingroomUri) &&  preg_match("@^https?://@", $readingroomUri)  ) {
-                 	$proc->setParameter('', 'base_aeon_url', $readingroomUri);
-                 } else  {
-                        \Drupal::logger('aspace_findingaid')->error('Invalid resource readingroom URI: @rmuri', ['@rmuri' => $readingroomUri]);
-                 }*/
-
-		//load the Aeon configuration
-
-		$aeonUri = $xslt_file_id['aeon_baseurl'];
-		$proc->setParameter('', 'base_aeon_url', $aeonUri);
-		/*
-		$aeon_file_id =\Drupal::config('custom_findingaid_importer.settings')->get('aeon_param_file'); 
-		$aeon_file = File::load($aeon_file_id);
-		$aeon_file_path = \Drupal::service('file_system')->realpath($aeon_file->getFileUri());   
-
-		$aeon_json = file_get_contents($aeon_file_path);
-		$params = json_decode($aeon_json, TRUE);
-      
-        //set xslt parameters with aeon configuration file
-		foreach ($params as $k => $v) {
-			$proc->setParameter('', $k, $v);
-		}	*/	
+            return FALSE;   	
+		}
+        //transform
+        $proc = new \XSLTProcessor();
+		$proc->registerPHPFunctions();
 		$proc->importStyleSheet($xsl); 
         $html = $proc->transformToXML($xml_doc);
 

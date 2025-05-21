@@ -18,9 +18,6 @@ custom_findingaid_importer.settings:
             constraints:
               NotBlank:
                 message: "Please set finding aid xslt config description"
-          aeon_baseurl:
-            type: string
-            label: 'Aeon base uri'
     xslt_file_path:
       type: string
       label: 'XSLT uploaded path'
