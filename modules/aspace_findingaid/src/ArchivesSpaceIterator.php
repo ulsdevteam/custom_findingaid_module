@@ -116,7 +116,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
   /**
    * {@inheritdoc}
    */
-  public function rewind() {
+  public function rewind(): void {
     $this->position = 0;
     $this->loadPage(1);
   }
@@ -124,7 +124,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
   /**
    * {@inheritdoc}
    */
-  public function count() {
+  public function count(): int {
     $this->rewind();
     return $this->count;
   }
@@ -132,28 +132,28 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
   /**
    * {@inheritdoc}
    */
-  public function current() {
+  public function current(): mixed {
     return $this->loaded[$this->position];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function key() {
+  public function key(): mixed {
     return $this->position;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function next() {
+  public function next(): void {
     ++$this->position;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function valid() {
+  public function valid(): bool {
 
     if ($this->position < count($this->loaded)) {
       return TRUE;
@@ -184,7 +184,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
         try {
 		if ( $d_xml->loadXML($xml) and $d_xsl->load($file_params["file_xslt"]) ) {
 			$xsl_proc = new \XSLTProcessor();
-      $xsl_proc->registerPHPFunctions();
+      			$xsl_proc->registerPHPFunctions();
 			
 			libxml_use_internal_errors(true);
 			$result = $xsl_proc->importStyleSheet($d_xsl);
