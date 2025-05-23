@@ -3,7 +3,7 @@ status: true
 dependencies: {  }
 id: aspace_findingaid
 label: aspace_findingaid
-description: 'Finding Aid Migrations into Islandora'
+description: 'Finding Aid Migration from ArchivesSpace'
 source_type: null
 module: null
 shared_configuration: null

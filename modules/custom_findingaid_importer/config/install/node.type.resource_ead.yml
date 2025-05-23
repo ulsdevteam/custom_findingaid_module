@@ -11,9 +11,9 @@ third_party_settings:
     available_menus:
       - main
     parent: 'main:'
-name: 'Resource EAD'
+name: 'Finding Aid'
 type: resource_ead
-description: 'archivesspace findingaid migration'
+description: 'Archival finding aid (EAD) rendering'
 help: null
 new_revision: true
 preview_mode: 1

@@ -1,17 +1,17 @@
 custom_findingaid_importer.settings:
-  title: 'Finding Aid file settings'
+  title: 'Finding Aid Settings'
   parent: system.admin_config
   route_name: custom_findingaid_importer.config_form
   weight: 100
 
 custom_findingaid_importer.custom_findingaid_importer_config:
-  title: 'XSLT upload path setting'
+  title: 'EAD XSLT upload path'
   parent: custom_findingaid_importer.settings
   route_name: custom_findingaid_importer.config_form
   weight: 0
 
 custom_findingaid_importer.custom_findingaid_importer_upload:
-  title: 'New XSLT uploader'
+  title: 'EAD XSLT management'
   parent: custom_findingaid_importer.settings
   route_name: custom_findingaid_importer.upload_form
   weight: 10

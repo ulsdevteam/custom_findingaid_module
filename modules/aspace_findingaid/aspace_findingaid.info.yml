@@ -1,4 +1,4 @@
-name: Archivesspace Finding Aid migration Module
+name: ArchivesSpace Finding Aid Migration Module
 type: module
 description: ArchivesSpace Finding Aid migration
 core_version_requirement: ^10
