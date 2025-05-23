@@ -4,8 +4,6 @@ dependencies:
   config:
     - field.field.node.resource_ead.body
     - field.field.node.resource_ead.field_display_title
-    - field.field.node.resource_ead.field_domain_access
-    - field.field.node.resource_ead.field_domain_all_affiliates
     - field.field.node.resource_ead.field_ead_id
     - field.field.node.resource_ead.field_resource_identifier
     - field.field.node.resource_ead.field_uri
@@ -64,8 +62,6 @@ hidden:
   display_media_service_file: true
   display_media_thumbnail: true
   field_display_title: true
-  field_domain_access: true
-  field_domain_all_affiliates: true
   links: true
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true

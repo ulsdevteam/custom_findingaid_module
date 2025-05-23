@@ -5,8 +5,6 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.resource_ead.body
     - field.field.node.resource_ead.field_display_title
-    - field.field.node.resource_ead.field_domain_access
-    - field.field.node.resource_ead.field_domain_all_affiliates
     - field.field.node.resource_ead.field_ead_id
     - field.field.node.resource_ead.field_resource_identifier
     - field.field.node.resource_ead.field_uri
@@ -100,8 +98,6 @@ content:
 hidden:
   addtoany: true
   field_display_title: true
-  field_domain_access: true
-  field_domain_all_affiliates: true
   field_ead_id: true
   field_resource_identifier: true
   field_uri: true
