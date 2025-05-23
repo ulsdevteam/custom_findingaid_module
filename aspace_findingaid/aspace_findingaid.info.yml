@@ -1,0 +1,7 @@
+name: Archivesspace Finding Aid migration Module
+type: module
+description: ArchivesSpace Finding Aid migration
+core_version_requirement: ^10
+package: Custom
+dependencies:
+- custom_findingaid_importer

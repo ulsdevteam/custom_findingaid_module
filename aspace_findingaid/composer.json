@@ -1,0 +1,12 @@
+{
+  "name": "drupal/aspace_findingaid",
+  "type": "drupal-module-custom",
+  "description": "A custom module to provide ArchivesSpace Finding Aid  migration into Drupal",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0-or-later",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "suggest": {
+	"drupal/field_group": "Grouping fields for editing and display in core defaults"
+	} 
+}

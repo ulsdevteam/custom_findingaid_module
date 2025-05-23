@@ -1,0 +1,57 @@
+langcode: en
+status: true
+dependencies: {  }
+id: aspace_findingaid
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: aspace_findingaid
+label: 'Archivesspace Finding Aid'
+source:
+  plugin: aspace_findingaid
+  object_type: resources
+  repository: /repositories/10
+  keys:
+    - uri
+process:
+  type:
+    plugin: default_value
+    default_value: resource_ead
+  title:
+    -
+      plugin: str_replace
+      source: title
+      regex: true
+      search: '#<(/)?emph#'
+      replace: '<\1em'
+    -
+      plugin: callback
+      callable: trim
+  uid:
+    plugin: default_value
+    default_value: 1
+  field_resource_identifier:
+    -
+      plugin: concat
+      source:
+        - id_0
+        - id_1
+        - id_2
+        - id_3
+      delimiter: '-'
+    -
+      plugin: str_replace
+      regex: true
+      search: /-+$/
+      replace: ''
+  field_as_ead_id: ead_id
+  body/value: ead_loc
+  body/format:
+    plugin: default_value
+    default_value: full_html
+  field_uri: uri
+destination:
+  plugin: 'entity:node'
+  bundle: resource_ead
+migration_dependencies: null
