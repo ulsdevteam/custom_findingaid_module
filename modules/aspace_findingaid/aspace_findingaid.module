@@ -14,6 +14,6 @@ use Drupal\Core\Routing\RouteMatchInterface;
 function aspace_findingaid_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.aspace_findingaid':
-      return t('Provide ArchivesSpace Finding Aid migration to drupal') ;
+      return t('Provide ArchivesSpace Finding Aid migration to Drupal') ;
   }
 }

@@ -31,13 +31,13 @@ class FindingAidResourceForm extends ConfigFormBase {
 
     $form['connection'] = [
       '#type' => 'details',
-      '#title' => t('ArchivesSpace API Connection'),
+      '#title' => t('ArchivesSpace API Connection Settings'),
       '#open' => TRUE,
     ];
 
     $form['connection']['archivesspace_base_uri'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('ArchivesSpace API Prefix'),
+      '#title' => $this->t('ArchivesSpace API URL'),
       '#config_target' => 'aspace_findingaid.settings:archivesspace_base_uri',
     ];
 
@@ -51,7 +51,7 @@ class FindingAidResourceForm extends ConfigFormBase {
       '#type' => 'password',
       '#title' => $this->t('ArchivesSpace Password'),
       '#config_target' => 'aspace_findingaid.settings:archivesspace_password',
-      '#description'   => t('Leave blank to make no changes, use an invalid string to disable if need be.'),
+      '#description'   => t('Leave blank to leave unchanged.'),
     ];
 
     return parent::buildForm($form, $form_state);

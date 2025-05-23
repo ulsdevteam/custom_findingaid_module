@@ -2,7 +2,7 @@ custom_findingaid_importer.config_form:
   path: '/admin/config/findingaid_xslt_path'
   defaults:
     _form: '\Drupal\custom_findingaid_importer\Form\XSLTpathForm'
-    _title: 'XSLT upload directory settings'
+    _title: 'EAD XSLT upload location settings'
   requirements:
     _permission: 'administer site configuration'
 

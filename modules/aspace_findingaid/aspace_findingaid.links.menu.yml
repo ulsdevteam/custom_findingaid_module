@@ -1,5 +1,5 @@
 aspace_findingaid.settings:
-  title: 'Resource EAD settings'
+  title: 'Finding Aid EAD settings'
   parent: system.admin_config
   route_name: aspace_findingaid.config_form
   weight: 100

@@ -191,7 +191,7 @@ class FindingAidResource extends SourcePluginBase {
    * {@inheritdoc}
    */
   public function __toString() {
-    return "ArchivesSpace data";
+    return "ArchivesSpace Finding Aid";
   }
 
 }
