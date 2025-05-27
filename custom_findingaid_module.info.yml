@@ -1,7 +1,0 @@
-name: Custom Finding Aid migration Module
-type: module
-description: Custom Finding Aid migration module
-core_version_requirement: ^10
-hidden: true
-package: Custom
-dependencies:
