@@ -11,7 +11,7 @@ id: node.resource_ead.body
 field_name: body
 entity_type: node
 bundle: resource_ead
-label: 'Finding Aid Data'
+label: 'Finding Aid Content'
 description: ''
 required: false
 translatable: true

@@ -44,23 +44,23 @@ use Drupal\custom_findingaid_importer\Utility\xmlTransformerHelper;
         //construct form section
          $form['transform_xml'] = [
                 '#type' => 'details',
-                '#title' => t('Generate Resource EAD content from finding aid XML with xslt template'),
+                '#title' => t('Generate Finding Aid content from EAD with an XSLT template'),
                 '#open' => TRUE,
         ];
         $form['transform_xml']['xml_file'] = [
                 '#type' => 'managed_file',
-                '#title' => t('Upload Finding Aid XML file to process'),
-                '#description' => t('The finding aid xmlfile to be processed'),
+                '#title' => t('Upload Finding Aid EAD file to process'),
+                '#description' => t('The finding aid XML file to be processed'),
                 '#upload_validators' => [ 
-                        'file_validate_extensions' => ['xml'],
+                        'file_validate_extensions' => ['xml', 'ead', 'ead3'],
                         ],
                 '#upload_location' => 'temporary://findingaid-xml',
                 '#required' => $node->isNew(),
         ];
         $form['transform_xml']['xslt_file'] = [
                 '#type' => 'select',
-                '#title' => t('Select XSLT File used to process findingaid xmlfile'),
-                '#description' => t('The XSLT template used to transform findingaid xmlfile'),
+                '#title' => t('Select XSLT File used to process the EAD'),
+                '#description' => t('The XSLT template used to transform the EAD to HTML'),
                 '#options' => $xslt_opts,
                 '#empty_option' => t(' -- Select a transformation template --  '),
                 '#required' => TRUE,
@@ -115,7 +115,8 @@ use Drupal\custom_findingaid_importer\Utility\xmlTransformerHelper;
         ];
         $trans_html = xmlTransformerHelper::xmlTransformer($data_parameters, $curr_xslt);
         if ($trans_html === FALSE) {
-                \Drupal::logger('custom_findingaid_importer')->error(t('Failed to transform the xml with xslt.'));
+		//Detail failure log captured in Utility/xmlTransformerHelper function
+                \Drupal::logger('custom_findingaid_importer')->error(t('Failed to transform the EAD with XSLT.'));
                 return;
         }
 
@@ -123,10 +124,11 @@ use Drupal\custom_findingaid_importer\Utility\xmlTransformerHelper;
         $xml_doc = new  \DOMDocument();                                                                  
         $xml_doc->load($xml_path);
 	$titleNode = $xml_doc->getElementsByTagName("unittitle")->item(0)->nodeValue;
+	// This string need translation
         $title = $xml_doc->getElementsByTagName("titleproper")->item(0)->nodeValue ?? 'Guide to '.$titleNode; 
         $title_formatted = trim(preg_replace('/\s+/',' ', strip_tags($title)));
         $resource_identifier =  $xml_doc->getElementsByTagName("unitid")->item(0)->nodeValue ?? '';                                                                       
-        $eadidNode = $xml_doc->getElementsByTagName("eadid"); //e.g. us-ppiu-asp200902
+        $eadidNode = $xml_doc->getElementsByTagName("eadid");
         if ($eadidNode->length > 0) {
                 $eadId = $eadidNode->item(0)->nodeValue;
         } else {
@@ -146,9 +148,9 @@ use Drupal\custom_findingaid_importer\Utility\xmlTransformerHelper;
         ]);
         try {
                 $node->save();
-                \Drupal::logger('custom_findingaid_importer')->info('Findingaid has been transformed and saved for EAD entity: @id', ['@id' =>$node->id()]);
+                \Drupal::logger('custom_findingaid_importer')->info('Finding Aid has been transformed and saved for Finding Aid type node: @id', ['@id' =>$node->id()]);
         } catch (\Exception $e) {
-                \Drupal::logger('custom_findingaid_importer')->error('Failed to save a findingaid entity');
+                \Drupal::logger('custom_findingaid_importer')->error('Failed to save a Finding Aid type node for Finding Aid record titled: @findingaidtitle', ['@findingaidtitle' =>$title_formatted]);
         }
  } 
 
@@ -158,6 +160,6 @@ use Drupal\custom_findingaid_importer\Utility\xmlTransformerHelper;
 function custom_findingaid_importer_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.custom_findingaid_importer':
-      return t('This module allows enduser to upload a Finding Aid xml file, and tranform it to html using xslt, then save it as');
+      return t('This module allows a user to upload a Finding Aid EAD file, and tranform it to HTML using a custom XSLT');
   }
 }

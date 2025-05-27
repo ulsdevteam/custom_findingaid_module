@@ -2,6 +2,6 @@ aspace_findingaid.config_form:
   path: '/admin/config/resource-findingaid'
   defaults:
     _form: '\Drupal\aspace_findingaid\Form\FindingAidResourceForm'
-    _title: 'Archivesspace Finding Aid Migration Settings'
+    _title: 'ArchivesSpace Finding Aid Migration Settings'
   requirements:
     _permission: 'administer site configuration'
