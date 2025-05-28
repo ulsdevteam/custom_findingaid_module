@@ -1,7 +1,7 @@
 {
-  "name": "drupal/aspace_findingaid",
+  "name": "drupal/custom_findingaid_module",
   "type": "drupal-module-custom",
-  "description": "A custom module to provide ArchivesSpace Finding Aid  migration into Drupal",
+  "description": "A custom module to provide Finding Aid Migration into Drupal",
   "keywords": ["Drupal"],
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
