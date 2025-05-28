@@ -1,0 +1,10 @@
+{
+  "name": "drupal/custom_findingaid_module",
+  "type": "composer",
+  "repositories:": [
+	  {
+		"type": "path",
+		"url": "modules/*"
+	  }
+  ]
+}
