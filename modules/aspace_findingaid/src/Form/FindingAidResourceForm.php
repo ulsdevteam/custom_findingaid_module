@@ -54,6 +54,13 @@ class FindingAidResourceForm extends ConfigFormBase {
       '#description'   => t('Leave blank to leave unchanged.'),
     ];
 
+    $form['archivesspace_repository'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Repository to process'),
+      '#config_target' => 'aspace_findingaid.settings:archivesspace_repository',
+      '#description' => t('The Archivesspace repository to process migration'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 }

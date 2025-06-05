@@ -126,6 +126,7 @@ class FindingAidResource extends SourcePluginBase {
       $this->lastUpdate->setTimestamp(0);
     }
 
+    //get repository with fallback logic: retrieve it from migration YML source configuration, otherwise from module config settings
     if (isset($configuration['repository'])) {
       if (is_int($configuration['repository'])) {
         $this->repository = '/repositories/' . $configuration['repository'];
@@ -133,6 +134,8 @@ class FindingAidResource extends SourcePluginBase {
       elseif (preg_match('#^/repositories/[0-9]+$#', $configuration['repository'])) {
         $this->repository = $configuration['repository'];
       }
+    } else {
+	$this->repository = \Drupla::config('aspace_findingaid.settings')->get('archivesspace_repository');
     }
 
     // Create the session
