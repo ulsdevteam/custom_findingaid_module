@@ -14,3 +14,6 @@ aspace_findingaid.settings:
     archivesspace_password:
       type: string
       label: 'ArchivesSpace API Password'
+    archivesspace_repository:
+      type: string
+      label: 'ArchivesSpace migration repository'
