@@ -8,7 +8,7 @@ use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
 
 /**
- * Provide Archivesspace finding aid migration Source plugin
+ * Provide ArchivesSpace finding aid migration Source plugin
  *
  * @MigrateSource(
  *   id = "aspace_findingaid"

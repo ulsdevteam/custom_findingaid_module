@@ -7,7 +7,7 @@ field_plugin_method: null
 cck_plugin_method: null
 migration_tags: null
 migration_group: aspace_findingaid
-label: 'Archivesspace Finding Aid'
+label: 'ASpace EAD Repo #'
 source:
   plugin: aspace_findingaid
   object_type: resources

@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Config\FileStorage;
 
 /**
- * Configure Archivesspace finding aid migration settings
+ * Configure ArchivesSpace finding aid migration settings
  */
 class FindingAidResourceForm extends ConfigFormBase {
 
@@ -57,10 +57,10 @@ class FindingAidResourceForm extends ConfigFormBase {
 
       $form['archivesspace_repository'] = [                                     
       '#type' => 'number',                                                 
-      '#title' => $this->t('Repository to process migration'),                          
+      '#title' => $this->t('Repository ID'),
       '#default_value' => '',
       '#config_target' => 'aspace_findingaid.settings:archivesspace_repository',
-      '#description' => t('The Archivesspace repository to process migration'), 
+      '#description' => t('The ID of the ArchivesSpace repository to process'),
       '#required' => TRUE,
     ];             
 
@@ -77,11 +77,11 @@ class FindingAidResourceForm extends ConfigFormBase {
   
     $file_template = $file_storage->read('migrate_plus.migration.aspace_findingaid');
     if (!$file_template) {
-	\Drupal::logger('aspace_findingaid')->error('Failed to find Archivesspace Finding Aid Migration Template YAM in configuration samples directory');
+	\Drupal::logger('aspace_findingaid')->error('Failed to find ArchivesSpace Finding Aid Migration Template YAML in configuration samples directory');
         return;
 	}
     //update repository value from configuration form
-    $file_template['source']['repository'] = (int)$form_state->getValue('archivesspace_repository');
+    $file_template['source']['repository'] = 'repository/'.$form_state->getValue('archivesspace_repository');
     $file_template['label'] = $file_template['label']. $file_template['source']['repository'];
     $file_template['id'] = $file_template['id'].'_'.$file_template['source']['repository'];
   
