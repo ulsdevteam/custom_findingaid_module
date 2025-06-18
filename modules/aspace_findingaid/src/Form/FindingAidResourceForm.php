@@ -82,14 +82,14 @@ class FindingAidResourceForm extends ConfigFormBase {
 	}
     //update repository value from configuration form
     $file_template['source']['repository'] = 'repository/'.$form_state->getValue('archivesspace_repository');
-    $file_template['label'] = $file_template['label']. $file_template['source']['repository'];
-    $file_template['id'] = $file_template['id'].'_'.$file_template['source']['repository'];
+    $file_template['label'] = $file_template['label']. $form_state->getValue('archivesspace_repository');
+    $file_template['id'] = $file_template['id'].'_'.$form_state->getValue('archivesspace_repository');
   
     //save to active configuration
-    $config = \Drupal::configFactory()->getEditable('migrate_plus.migration.aspace_findingaid_'.$file_template['source']['repository']);   
+    $config = \Drupal::configFactory()->getEditable('migrate_plus.migration.aspace_findingaid_'.$form_state->getValue('archivesspace_repository');   
     $config->setData($file_template)->save();
     \Drupal::logger('aspace_findingaid')->info('A new migration configuration for repository: @repo has been created', 
-			['@repo'=>$file_template['source']['repository'] ]);
+			['@repo'=>$form_state->getValue('archivesspace_repository') ]);
 
     //clear migration cache
     \Drupal::service('plugin.manager.migration')->clearCachedDefinitions();
