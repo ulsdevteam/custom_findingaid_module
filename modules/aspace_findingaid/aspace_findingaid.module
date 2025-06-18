@@ -9,7 +9,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Implements hook_help().
- * Provides help text for Archivesspace Finding Aid migration module
+ * Provides help text for ArchivesSpace Finding Aid migration module
  */
 function aspace_findingaid_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
