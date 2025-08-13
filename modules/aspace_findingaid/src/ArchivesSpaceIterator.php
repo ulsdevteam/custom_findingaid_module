@@ -1,18 +1,17 @@
 <?php
 
 namespace Drupal\aspace_findingaid;
-
-if (!defined('XSLT_TEMPLATE')) {
-	define('XSLT_TEMPLATE', implode(DIRECTORY_SEPARATOR, array(__DIR__, 'uls_ead.xslt')));
-	}
-if (!defined('FINDINGAID_PREFIX')) {
-	define('FINDINGAID_PREFIX', "Guide to the");
-}
+use Drupal\file\Entity\File;
 
 /**
  * Manages iteration of ArchivesSpace API search result sets.
  */
 class ArchivesSpaceIterator implements \Countable, \Iterator {
+
+  /**
+   * Declare a constant for finding aid name prefix
+   */
+   const FINDINGAID_PREFIX = 'Guide to the';   
 
   /**
    * ArchivesSpace Session object.
@@ -232,9 +231,19 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
                 'include_uris' => "True",
                 'ead3'=> "False",
                 ];		
-
+	
+	  //get the archivesSpace xslt file from configuration
+	  $config = \Drupal::config('aspace_findingaid.settings');
+	  $as_xslt_fid = $config->get('archivesspace_xslt_file') [0]?? NULL;
+	  if (!$as_xslt_fid) {
+		\Drupal::logger('aspace_findingaid')->error('Failed to load the xslt file.');
+		throw new \RuntimeException('No XSLT file configured on ArchivesSpace Migration Module');
+		}
+	  $as_xslt_file = \Drupal\file\Entity\File::load($as_xslt_fid);
+	  $f_name = $as_xslt_file->getFilename();
+	  $as_xslt_path = \Drupal::service('file_system')->realpath($as_xslt_file->getFileUri());
 	  $file_params = [
-		'file_xslt' => XSLT_TEMPLATE,
+		'file_xslt' => $as_xslt_path,
 		];
           $ead_results=[];
 

@@ -58,11 +58,21 @@ class FindingAidResourceForm extends ConfigFormBase {
       $form['archivesspace_repository'] = [                                     
       '#type' => 'number',                                                 
       '#title' => $this->t('Repository ID'),
-      '#default_value' => '',
       '#config_target' => 'aspace_findingaid.settings:archivesspace_repository',
       '#description' => t('The ID of the ArchivesSpace repository to process'),
       '#required' => TRUE,
     ];             
+
+      $form['archivesspace_xslt_file'] = [
+	'#type' => 'managed_file',
+	'#title' => $this->t('ArchivesSpace XSLT transformation file'),
+	'#description' => $this->t('The XSLT used to process ArchivesSpace Finding aids'),
+	'#upload_location' => 'public://as_xslt_uploads',
+	'#upload_validators' => [
+		'file_validate_extensions' => ['xslt xsl'],
+		],
+	'#config_target' => 'aspace_findingaid.settings:archivesspace_xslt_file',
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -71,6 +81,18 @@ class FindingAidResourceForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    //handle archivesSpace xslt
+    $fid = $form_state->getValue('archivesspace_xslt_file')[0] ?? NULL;
+    $this->config('aspace_findingaid.settings') 
+	->set('archivesspace_xslt_file', $fid)
+	->save();
+    //make file permanent
+    if($fid) {
+	$as_xslt_file = \Drupal\file\Entity\File::load($fid);
+	$as_xslt_file->setPermanent();
+	$as_xslt_file->save();
+	}
+
     //locate the template file from module samples configuration directory
     $conf_filepath = \Drupal::service('extension.list.module')->getPath('aspace_findingaid').'/config/samples';
     $file_storage = new FileStorage($conf_filepath);
@@ -81,7 +103,7 @@ class FindingAidResourceForm extends ConfigFormBase {
         return;
 	}
     //update repository value from configuration form
-    $file_template['source']['repository'] = 'repository/'.$form_state->getValue('archivesspace_repository');
+    $file_template['source']['repository'] = '/repositories/'.$form_state->getValue('archivesspace_repository');
     $file_template['label'] = $file_template['label']. $form_state->getValue('archivesspace_repository');
     $file_template['id'] = $file_template['id'].'_'.$form_state->getValue('archivesspace_repository');
   

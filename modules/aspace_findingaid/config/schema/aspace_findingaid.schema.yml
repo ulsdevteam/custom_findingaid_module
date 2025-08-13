@@ -17,3 +17,8 @@ aspace_findingaid.settings:
     archivesspace_repository:
       type: string
       label: 'ArchivesSpace repository id'
+    archivesspace_xslt_file:
+      type: sequence
+      sequence:
+        type: integer
+        label: 'ArchiveSpace XSLT file ID'
