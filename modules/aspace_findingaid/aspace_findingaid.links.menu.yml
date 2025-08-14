@@ -1,0 +1,11 @@
+aspace_findingaid.settings:
+  title: 'ArchivesSpace settings'
+  parent: system.admin_config
+  route_name: aspace_findingaid.config_form
+  weight: 100
+
+aspace_findingaid.aspace_findingaid_migration_config:
+  title: 'Config'
+  parent: aspace_findingaid.settings
+  route_name: aspace_findingaid.config_form
+  weight: 10

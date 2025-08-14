@@ -1,0 +1,8 @@
+name: Finding Aid Importer
+type: module
+description: Allows uploading a Finding Aid EAD XML, transforming to HTML using XSLT, and saving as a Drupal entity
+core_version_requirement: ^10
+package: Custom
+dependencies:
+  - drupal:node
+  - drupal:file
