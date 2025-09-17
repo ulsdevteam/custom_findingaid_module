@@ -11,7 +11,13 @@ custom_findingaid_importer.custom_findingaid_importer_config:
   weight: 0
 
 custom_findingaid_importer.custom_findingaid_importer_upload:
-  title: 'EAD XSLT management'
+  title: 'Add EAD XSLTs'
   parent: custom_findingaid_importer.settings
   route_name: custom_findingaid_importer.upload_form
   weight: 10
+
+custom_findingaid_importer.custom_findingaid_importer_display:
+  title: 'Existing EAD XSLTs'
+  parent: custom_findingaid_importer.settings
+  route_name: custom_findingaid_importer.display_form
+  weight: 20

@@ -13,3 +13,11 @@ custom_findingaid_importer.upload_form:
     _title: 'Upload Finding Aid XSLT'
   requirements:
     _permission: 'administer site configuration'
+
+custom_findingaid_importer.display_form:
+  path: '/admin/config/findingaid_xslt_display'
+  defaults:
+    _form: '\Drupal\custom_findingaid_importer\Form\FindingaidXSLTlist'
+    _title: 'Existing Finding Aid XSLTs'
+  requirements:
+    _permission: 'administer site configuration'
