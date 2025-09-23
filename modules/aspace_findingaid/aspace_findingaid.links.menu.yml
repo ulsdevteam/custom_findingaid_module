@@ -5,7 +5,14 @@ aspace_findingaid.settings:
   weight: 100
 
 aspace_findingaid.aspace_findingaid_migration_config:
-  title: 'Config'
+  title: 'API Configuration'
   parent: aspace_findingaid.settings
   route_name: aspace_findingaid.config_form
+  weight: 0
+
+aspace_findingaid.aspace_findingaid_migration_repository:
+  title: 'Repository and XSLT Configuration'
+  parent: aspace_findingaid.settings
+  route_name: aspace_findingaid.repository_form
   weight: 10
+
