@@ -32,10 +32,14 @@ class xmlTransformerHelper {
 		
 		//file entity exists in drupal db
 		if ( !$xslt_file ) { 
-			\Drupal::logger('custom_findingaid_importer')->error(t('Failed to find XSLT file.'));
+			\Drupal::logger('custom_findingaid_importer')->error('Failed to find XSLT file.');
 			return FALSE;
 		}
-		$xslt_path = \Drupal::service('file_system')->realpath($xslt_file->getFileUri());
+		
+		//handle file storages either in local filesystem or s3fs
+		$file_uri = $xslt_file->getFileUri();
+                $fileUrl =\Drupal::service('file_url_generator')->generateAbsoluteString($file_uri);
+		
        //load xml document from the uploaded file path
         $xml_doc = new  \DOMDocument();
         if ( !$xml_doc->load($data_parameters['xml_path']) ) {
@@ -43,7 +47,7 @@ class xmlTransformerHelper {
 			return FALSE;
 		}
         $xsl= new \DOMDocument();
-        if ( !$xsl->load($xslt_path) ) {
+        if ( !$xsl->load($fileUrl) ) {
 			\Drupal::logger('custom_findingaid_importer')->error('Failed to load the xslt file.');
             return FALSE;   	
 		}
@@ -54,7 +58,7 @@ class xmlTransformerHelper {
         $html = $proc->transformToXML($xml_doc);
 
 		if ( $html === FALSE) {
-			\Drupal::logger('custom_findingaid_importer')->error(t('Failed to tranform the xml with the xslt file.')); 
+			\Drupal::logger('custom_findingaid_importer')->error('Failed to tranform the xml with the xslt file.'); 
 			}
 		return $html;
 		}

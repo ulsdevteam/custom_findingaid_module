@@ -176,7 +176,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
    *     -$file_xslt stylesheet tranformation template 
    * @return str $f_content
    */
-   public function ead_to_html($xml, $eadName, $file_params) {
+   public function ead_to_html(string $xml, string $eadName, array $file_params) {
 	//load xml and xslt
 	$d_xml= new \DOMDocument();
 	$d_xsl= new \DOMDocument();
@@ -200,7 +200,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 			}
 		}
 	}
-	catch (Exception $e) {
+	catch (\Exception $e) {
 		\Drupal::logger('aspace_findingaid')->error('Failed to process ead to xml: @msg.', ['@msg' => $e->getMessage()]);
 		}
         return "";
@@ -241,7 +241,11 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 		}
 	  $as_xslt_file = \Drupal\file\Entity\File::load($as_xslt_fid);
 	  $f_name = $as_xslt_file->getFilename();
-	  $as_xslt_path = \Drupal::service('file_system')->realpath($as_xslt_file->getFileUri());
+
+	  //handle file storages either in local or s3fs
+	  $file_uri = $as_xslt_file->getFileUri();
+          $as_xslt_path =\Drupal::service('file_url_generator')->generateAbsoluteString($file_uri);
+
 	  $file_params = [
 		'file_xslt' => $as_xslt_path,
 		];
@@ -258,7 +262,7 @@ class ArchivesSpaceIterator implements \Countable, \Iterator {
 			if (array_key_exists('finding_aid_title', $item)) {
 				$item_ead['title'] = $item['finding_aid_title'];
 			} else {
-				$item_ead['title'] = FINDINGAID_PREFIX . $item['title'];
+				$item_ead['title'] = self::FINDINGAID_PREFIX . $item['title'];
 				}
 			array_key_exists('ead_id', $item) ? $item_ead['ead_id'] = $item['ead_id'] : NULL;
 		        	
